@@ -4,64 +4,74 @@ import ADMWheel from '@/components/ADMWheel';
 
 export default function Dashboard() {
   return (
-    <div className="max-w-7xl">
+    <div className="max-w-7xl mx-auto">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-8 mb-8 text-white">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-          <div className="lg:max-w-md">
-            <h1 className="text-4xl font-bold mb-3">
-              TOGAF<span className="text-blue-400">®</span> ADM Helper
+      <div className="bg-gradient-to-br from-[#1A2B48] to-[#2D4A6F] rounded-2xl p-10 mb-8">
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
+          <div className="lg:max-w-xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 mb-5">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
+              <span className="text-xs font-medium text-[#D4AF37]">Interactive Learning Platform</span>
+            </div>
+
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+              <span className="text-white">Master </span>
+              <span className="text-[#00BCD4]">TOGAF ADM</span>
             </h1>
-            <p className="text-slate-300 text-lg mb-6">
+
+            <p className="text-gray-300 text-lg mb-8 leading-relaxed">
               Your interactive guide through the Architecture Development Method.
               Study, practice, and apply TOGAF with confidence.
             </p>
-            <div className="flex flex-wrap gap-3">
+
+            <div className="flex flex-wrap gap-4">
               <Link
                 href="/wizard"
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+                className="px-6 py-3 bg-[#00BCD4] text-white rounded-lg font-semibold transition-all duration-200 hover:bg-[#00ACC1] hover:shadow-lg hover:shadow-[#00BCD4]/30 inline-flex items-center gap-2"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                Start Learning
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
-                Start Wizard
               </Link>
               <Link
                 href="/phases"
-                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 rounded-lg font-medium transition-colors"
+                className="px-6 py-3 bg-white/10 text-white rounded-lg font-semibold border border-white/20 transition-all duration-200 hover:bg-white/20"
               >
                 Browse Phases
               </Link>
             </div>
           </div>
-          <div className="flex gap-6 text-center">
-            <div className="bg-slate-800/50 rounded-xl p-4 min-w-[100px]">
-              <div className="text-3xl font-bold text-blue-400">{phases.length}</div>
-              <div className="text-sm text-slate-400">Phases</div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-4">
+            <div className="text-center p-5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 min-w-[100px]">
+              <div className="text-3xl font-bold text-[#00BCD4]">{phases.length}</div>
+              <div className="text-xs text-gray-400 mt-1">ADM Phases</div>
             </div>
-            <div className="bg-slate-800/50 rounded-xl p-4 min-w-[100px]">
-              <div className="text-3xl font-bold text-purple-400">
+            <div className="text-center p-5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 min-w-[100px]">
+              <div className="text-3xl font-bold text-[#D4AF37]">
                 {phases.reduce((acc, p) => acc + p.deliverables.length, 0)}
               </div>
-              <div className="text-sm text-slate-400">Deliverables</div>
+              <div className="text-xs text-gray-400 mt-1">Deliverables</div>
             </div>
-            <div className="bg-slate-800/50 rounded-xl p-4 min-w-[100px]">
-              <div className="text-3xl font-bold text-emerald-400">
+            <div className="text-center p-5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 min-w-[100px]">
+              <div className="text-3xl font-bold text-[#007BFF]">
                 {phases.reduce((acc, p) => acc + p.artifacts.length, 0)}
               </div>
-              <div className="text-sm text-slate-400">Artifacts</div>
+              <div className="text-xs text-gray-400 mt-1">Artifacts</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* ADM Wheel Section */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 mb-8">
+      <div className="bg-[#0F172A] rounded-2xl p-8 mb-8 border border-gray-800">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">The ADM Cycle</h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">
-            The Architecture Development Method (ADM) provides a tested and repeatable process
-            for developing architectures. Click on any phase to explore its details.
+          <h2 className="text-2xl font-bold text-white mb-2">The ADM Cycle</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            The Architecture Development Method provides a tested and repeatable process
+            for developing architectures. Hover over any phase to explore.
           </p>
         </div>
         <ADMWheel />
@@ -71,80 +81,68 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Link
           href="/wizard"
-          className="group bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl"
+          className="group rounded-xl p-6 bg-[#0F172A] border border-gray-800 hover:border-[#00BCD4]/50 transition-all duration-200"
         >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-1">Step-by-Step Wizard</h3>
-              <p className="text-blue-100 text-sm">
-                Guided walkthrough of all ADM phases
-              </p>
-            </div>
+          <div className="w-12 h-12 rounded-lg bg-[#00BCD4]/10 flex items-center justify-center mb-4 group-hover:bg-[#00BCD4]/20 transition-colors">
+            <svg className="w-6 h-6 text-[#00BCD4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
           </div>
+          <h3 className="text-lg font-semibold text-white mb-2">Step-by-Step Wizard</h3>
+          <p className="text-gray-400 text-sm">
+            Guided walkthrough of all ADM phases with interactive progress tracking.
+          </p>
         </Link>
 
         <Link
           href="/stakeholders"
-          className="group bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-6 rounded-xl hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg hover:shadow-xl"
+          className="group rounded-xl p-6 bg-[#0F172A] border border-gray-800 hover:border-[#D4AF37]/50 transition-all duration-200"
         >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-1">Stakeholder Registry</h3>
-              <p className="text-emerald-100 text-sm">
-                Manage stakeholders & concerns
-              </p>
-            </div>
+          <div className="w-12 h-12 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center mb-4 group-hover:bg-[#D4AF37]/20 transition-colors">
+            <svg className="w-6 h-6 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
           </div>
+          <h3 className="text-lg font-semibold text-white mb-2">Stakeholder Registry</h3>
+          <p className="text-gray-400 text-sm">
+            Manage stakeholders, concerns, and engagement with influence matrix.
+          </p>
         </Link>
 
         <Link
           href="/artifacts"
-          className="group bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
+          className="group rounded-xl p-6 bg-[#0F172A] border border-gray-800 hover:border-[#007BFF]/50 transition-all duration-200"
         >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-1">Artifacts & Deliverables</h3>
-              <p className="text-purple-100 text-sm">
-                Complete artifact reference
-              </p>
-            </div>
+          <div className="w-12 h-12 rounded-lg bg-[#007BFF]/10 flex items-center justify-center mb-4 group-hover:bg-[#007BFF]/20 transition-colors">
+            <svg className="w-6 h-6 text-[#007BFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
           </div>
+          <h3 className="text-lg font-semibold text-white mb-2">Artifacts & Deliverables</h3>
+          <p className="text-gray-400 text-sm">
+            Complete reference of catalogs, matrices, and diagrams for each phase.
+          </p>
         </Link>
       </div>
 
       {/* Phase Quick Reference */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
-        <h2 className="text-xl font-bold text-slate-900 mb-6">Phase Quick Reference</h2>
+      <div className="bg-[#0F172A] rounded-2xl p-8 border border-gray-800">
+        <h2 className="text-xl font-bold text-white mb-6">Phase Quick Reference</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {phases.map((phase, index) => (
+          {phases.map((phase) => (
             <Link
               key={phase.id}
               href={`/phases/${phase.id}`}
-              className="group flex items-start gap-3 p-4 rounded-xl border border-slate-100 hover:border-blue-200 hover:bg-blue-50/50 transition-all"
+              className="group flex items-start gap-4 p-4 rounded-lg border border-gray-800 hover:border-[#00BCD4]/40 hover:bg-[#00BCD4]/5 transition-all duration-200"
             >
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 group-hover:from-blue-100 group-hover:to-blue-200 flex items-center justify-center font-bold text-slate-600 group-hover:text-blue-700 flex-shrink-0 transition-colors">
+              <div className="w-10 h-10 rounded-lg bg-[#1A2B48] flex items-center justify-center font-bold text-[#00BCD4] flex-shrink-0 text-sm">
                 {phase.code}
               </div>
               <div className="min-w-0">
-                <h3 className="font-medium text-slate-900 group-hover:text-blue-900 transition-colors truncate">
+                <h3 className="font-medium text-white group-hover:text-[#00BCD4] transition-colors text-sm">
                   {phase.name}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+                <p className="text-xs text-gray-500 mt-1 line-clamp-2">
                   {phase.objectives[0]}
                 </p>
               </div>
@@ -154,8 +152,10 @@ export default function Dashboard() {
       </div>
 
       {/* Footer */}
-      <div className="mt-8 text-center text-sm text-slate-400">
-        <p>TOGAF® is a registered trademark of The Open Group.</p>
+      <div className="mt-8 text-center">
+        <p className="text-xs text-gray-600">
+          TOGAF® is a registered trademark of The Open Group.
+        </p>
       </div>
     </div>
   );

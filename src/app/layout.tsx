@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TOGAF Helper",
-  description: "Interactive TOGAF ADM guide and project management tool",
+  title: "TOGAF Helper - Interactive ADM Guide",
+  description: "Master TOGAF certification with our interactive Architecture Development Method guide. Study, practice, and apply TOGAF with confidence.",
 };
 
 export default function RootLayout({
@@ -24,13 +24,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0B1120] text-white`}
       >
-        <div className="flex">
+        <div className="flex min-h-screen">
           <Navigation />
-          <main className="flex-1 p-8 min-h-screen">
+          <main className="flex-1 p-6 lg:p-8 overflow-auto">
             {children}
           </main>
         </div>
