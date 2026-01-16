@@ -176,7 +176,7 @@ export default function ADMWheel() {
           >
             <div className="flex items-center gap-3 mb-4">
               <div
-                className="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-lg"
+                className="min-w-12 h-12 px-3 rounded-lg flex items-center justify-center text-white font-bold text-base whitespace-nowrap"
                 style={{ backgroundColor: hoveredWheelPhase?.color }}
               >
                 {hoveredInfo.code}
