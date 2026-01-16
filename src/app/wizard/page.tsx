@@ -4,19 +4,20 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { phases } from '@/data/togaf-adm';
 
-const phaseColors = [
-  { bg: 'from-violet-500 to-purple-600', glow: 'shadow-violet-500/30' },
-  { bg: 'from-purple-500 to-fuchsia-600', glow: 'shadow-purple-500/30' },
-  { bg: 'from-fuchsia-500 to-pink-600', glow: 'shadow-fuchsia-500/30' },
-  { bg: 'from-pink-500 to-rose-600', glow: 'shadow-pink-500/30' },
-  { bg: 'from-rose-500 to-red-600', glow: 'shadow-rose-500/30' },
-  { bg: 'from-orange-500 to-amber-600', glow: 'shadow-orange-500/30' },
-  { bg: 'from-amber-500 to-yellow-600', glow: 'shadow-amber-500/30' },
-  { bg: 'from-lime-500 to-green-600', glow: 'shadow-lime-500/30' },
-  { bg: 'from-green-500 to-emerald-600', glow: 'shadow-green-500/30' },
-  { bg: 'from-cyan-500 to-teal-600', glow: 'shadow-cyan-500/30' },
-  { bg: 'from-teal-500 to-cyan-600', glow: 'shadow-teal-500/30' },
-];
+// Brand-consistent phase colors based on ADM wheel
+const phaseColors: Record<string, { bg: string; border: string; text: string }> = {
+  'preliminary': { bg: 'bg-[#1A2B48]', border: 'border-[#1A2B48]', text: 'text-white' },
+  'phase-a': { bg: 'bg-[#1E3A5F]', border: 'border-[#1E3A5F]', text: 'text-white' },
+  'phase-b': { bg: 'bg-[#2563EB]', border: 'border-[#2563EB]', text: 'text-white' },
+  'phase-c-is': { bg: 'bg-[#3B82F6]', border: 'border-[#3B82F6]', text: 'text-white' },
+  'phase-c-app': { bg: 'bg-[#0EA5E9]', border: 'border-[#0EA5E9]', text: 'text-white' },
+  'phase-d': { bg: 'bg-[#00BCD4]', border: 'border-[#00BCD4]', text: 'text-white' },
+  'phase-e': { bg: 'bg-[#14B8A6]', border: 'border-[#14B8A6]', text: 'text-white' },
+  'phase-f': { bg: 'bg-[#10B981]', border: 'border-[#10B981]', text: 'text-white' },
+  'phase-g': { bg: 'bg-[#D4AF37]', border: 'border-[#D4AF37]', text: 'text-[#1A2B48]' },
+  'phase-h': { bg: 'bg-[#F59E0B]', border: 'border-[#F59E0B]', text: 'text-[#1A2B48]' },
+  'requirements-management': { bg: 'bg-[#00BCD4]', border: 'border-[#00BCD4]', text: 'text-white' },
+};
 
 export default function Wizard() {
   const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
@@ -25,7 +26,7 @@ export default function Wizard() {
 
   const currentPhase = phases[currentPhaseIndex];
   const currentStep = currentPhase.steps[currentStepIndex];
-  const currentColor = phaseColors[currentPhaseIndex % phaseColors.length];
+  const currentColor = phaseColors[currentPhase.id] || phaseColors['preliminary'];
 
   const toggleStepComplete = (stepId: string) => {
     const newCompleted = new Set(completedSteps);
@@ -63,32 +64,35 @@ export default function Wizard() {
   return (
     <div className="max-w-6xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold text-white font-montserrat">
           ADM Wizard
         </h1>
-        <p className="text-gray-500 mt-2">
+        <p className="text-gray-400 mt-2">
           Step-by-step guidance through the Architecture Development Method
         </p>
       </div>
 
       {/* Phase Progress */}
-      <div className="rounded-2xl bg-[#12121a] border border-white/5 p-4 mb-6">
+      <div className="rounded-2xl bg-[#0F172A] border border-gray-800 p-4 mb-6">
         <div className="flex items-center gap-2 overflow-x-auto pb-2">
-          {phases.map((phase, index) => (
-            <button
-              key={phase.id}
-              onClick={() => goToPhase(index)}
-              className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
-                index === currentPhaseIndex
-                  ? `bg-gradient-to-r ${phaseColors[index % phaseColors.length].bg} text-white shadow-lg ${phaseColors[index % phaseColors.length].glow}`
-                  : index < currentPhaseIndex
-                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                  : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-white/5'
-              }`}
-            >
-              {phase.code}
-            </button>
-          ))}
+          {phases.map((phase, index) => {
+            const color = phaseColors[phase.id] || phaseColors['preliminary'];
+            return (
+              <button
+                key={phase.id}
+                onClick={() => goToPhase(index)}
+                className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  index === currentPhaseIndex
+                    ? `${color.bg} ${color.text} shadow-lg`
+                    : index < currentPhaseIndex
+                    ? 'bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/30'
+                    : 'bg-[#1A2B48]/50 text-gray-400 hover:bg-[#1A2B48] border border-gray-700'
+                }`}
+              >
+                {phase.code}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -96,30 +100,30 @@ export default function Wizard() {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Current Phase Header */}
-          <div className={`bg-gradient-to-r ${currentColor.bg} rounded-2xl p-8 shadow-xl ${currentColor.glow}`}>
+          <div className={`${currentColor.bg} rounded-2xl p-8 shadow-xl`}>
             <div className="flex items-center gap-4 mb-4">
               <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-2xl font-bold backdrop-blur-sm">
                 {currentPhase.code}
               </div>
               <div>
-                <h2 className="text-2xl font-bold">{currentPhase.fullName}</h2>
-                <p className="text-white/70">
+                <h2 className={`text-2xl font-bold font-montserrat ${currentColor.text}`}>{currentPhase.fullName}</h2>
+                <p className={`${currentColor.text} opacity-70`}>
                   Step {currentStepIndex + 1} of {currentPhase.steps.length}
                 </p>
               </div>
             </div>
-            <p className="text-white/80 leading-relaxed">{currentPhase.description}</p>
+            <p className={`${currentColor.text} opacity-80 leading-relaxed`}>{currentPhase.description}</p>
           </div>
 
           {/* Current Step */}
-          <div className="rounded-2xl bg-[#12121a] border border-white/5 p-8">
+          <div className="rounded-2xl bg-[#0F172A] border border-gray-800 p-8">
             <div className="flex items-start gap-4">
               <button
                 onClick={() => toggleStepComplete(currentStep.id)}
                 className={`flex-shrink-0 w-10 h-10 rounded-xl border-2 flex items-center justify-center transition-all duration-300 ${
                   completedSteps.has(currentStep.id)
-                    ? 'bg-emerald-500 border-emerald-500 text-white shadow-lg shadow-emerald-500/30'
-                    : 'border-white/20 hover:border-violet-400'
+                    ? 'bg-[#D4AF37] border-[#D4AF37] text-[#1A2B48] shadow-lg shadow-[#D4AF37]/30'
+                    : 'border-gray-600 hover:border-[#00BCD4]'
                 }`}
               >
                 {completedSteps.has(currentStep.id) && (
@@ -135,11 +139,11 @@ export default function Wizard() {
                 <p className="text-gray-400 mb-6 leading-relaxed">{currentStep.description}</p>
 
                 {currentStep.tips && currentStep.tips.length > 0 && (
-                  <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4">
-                    <h4 className="text-sm font-medium text-amber-400 mb-2">Tips</h4>
+                  <div className="bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-xl p-4">
+                    <h4 className="text-sm font-medium text-[#D4AF37] mb-2">Tips</h4>
                     <ul className="space-y-1">
                       {currentStep.tips.map((tip, i) => (
-                        <li key={i} className="text-sm text-amber-200/80">• {tip}</li>
+                        <li key={i} className="text-sm text-[#D4AF37]/80">• {tip}</li>
                       ))}
                     </ul>
                   </div>
@@ -148,18 +152,18 @@ export default function Wizard() {
             </div>
 
             {/* Navigation */}
-            <div className="flex justify-between mt-8 pt-6 border-t border-white/5">
+            <div className="flex justify-between mt-8 pt-6 border-t border-gray-800">
               <button
                 onClick={prevStep}
                 disabled={currentPhaseIndex === 0 && currentStepIndex === 0}
-                className="px-6 py-3 rounded-xl border border-white/10 text-gray-300 hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                className="px-6 py-3 rounded-xl border border-gray-700 text-gray-300 hover:bg-[#1A2B48] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               >
                 ← Previous
               </button>
               <button
                 onClick={nextStep}
                 disabled={currentPhaseIndex === phases.length - 1 && currentStepIndex === currentPhase.steps.length - 1}
-                className={`px-6 py-3 rounded-xl bg-gradient-to-r ${currentColor.bg} text-white font-semibold shadow-lg ${currentColor.glow} hover:-translate-y-0.5 disabled:opacity-30 disabled:cursor-not-allowed transition-all`}
+                className="px-6 py-3 rounded-xl bg-[#00BCD4] text-white font-semibold shadow-lg shadow-[#00BCD4]/30 hover:-translate-y-0.5 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               >
                 Next Step →
               </button>
@@ -167,7 +171,7 @@ export default function Wizard() {
           </div>
 
           {/* All Steps in Phase */}
-          <div className="rounded-2xl bg-[#12121a] border border-white/5 p-6">
+          <div className="rounded-2xl bg-[#0F172A] border border-gray-800 p-6">
             <h3 className="text-lg font-semibold text-white mb-4">
               All Steps in {currentPhase.name}
             </h3>
@@ -178,23 +182,23 @@ export default function Wizard() {
                   onClick={() => setCurrentStepIndex(index)}
                   className={`w-full text-left p-4 rounded-xl transition-all duration-300 ${
                     index === currentStepIndex
-                      ? 'bg-violet-500/20 border border-violet-500/30'
-                      : 'hover:bg-white/5 border border-transparent'
+                      ? 'bg-[#00BCD4]/20 border border-[#00BCD4]/30'
+                      : 'hover:bg-[#1A2B48]/50 border border-transparent'
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium ${
                       completedSteps.has(step.id)
-                        ? 'bg-emerald-500 text-white'
+                        ? 'bg-[#D4AF37] text-[#1A2B48]'
                         : index === currentStepIndex
-                        ? `bg-gradient-to-r ${currentColor.bg} text-white`
-                        : 'bg-white/10 text-gray-400'
+                        ? `${currentColor.bg} ${currentColor.text}`
+                        : 'bg-[#1A2B48] text-gray-400'
                     }`}>
                       {completedSteps.has(step.id) ? '✓' : index + 1}
                     </div>
                     <span className={`text-sm ${
                       completedSteps.has(step.id)
-                        ? 'text-emerald-400 line-through'
+                        ? 'text-[#D4AF37] line-through'
                         : index === currentStepIndex
                         ? 'text-white'
                         : 'text-gray-400'
@@ -211,12 +215,12 @@ export default function Wizard() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Objectives */}
-          <div className="rounded-2xl bg-[#12121a] border border-white/5 p-6">
+          <div className="rounded-2xl bg-[#0F172A] border border-gray-800 p-6">
             <h3 className="text-lg font-semibold text-white mb-4">Objectives</h3>
             <ul className="space-y-3">
               {currentPhase.objectives.map((obj, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-gray-400">
-                  <span className="text-violet-400 mt-0.5">•</span>
+                  <span className="text-[#00BCD4] mt-0.5">•</span>
                   {obj}
                 </li>
               ))}
@@ -224,11 +228,11 @@ export default function Wizard() {
           </div>
 
           {/* Key Questions */}
-          <div className="rounded-2xl bg-[#12121a] border border-white/5 p-6">
+          <div className="rounded-2xl bg-[#0F172A] border border-gray-800 p-6">
             <h3 className="text-lg font-semibold text-white mb-4">Key Questions</h3>
             <ul className="space-y-3">
               {currentPhase.keyQuestions.map((q, i) => (
-                <li key={i} className="text-sm text-gray-400 pb-3 border-b border-white/5 last:border-0">
+                <li key={i} className="text-sm text-gray-400 pb-3 border-b border-gray-700 last:border-0">
                   {q}
                 </li>
               ))}
@@ -236,28 +240,28 @@ export default function Wizard() {
           </div>
 
           {/* Deliverables */}
-          <div className="rounded-2xl bg-[#12121a] border border-white/5 p-6">
+          <div className="rounded-2xl bg-[#0F172A] border border-gray-800 p-6">
             <h3 className="text-lg font-semibold text-white mb-4">Deliverables</h3>
             <ul className="space-y-3">
               {currentPhase.deliverables.map((d) => (
                 <li key={d.id} className="flex items-start gap-3 text-sm">
-                  <span className={d.required ? 'text-fuchsia-400' : 'text-gray-600'}>
+                  <span className={d.required ? 'text-[#D4AF37]' : 'text-gray-600'}>
                     {d.required ? '●' : '○'}
                   </span>
                   <span className="text-gray-400">{d.name}</span>
                 </li>
               ))}
             </ul>
-            <p className="text-xs text-gray-600 mt-4">● Required  ○ Optional</p>
+            <p className="text-xs text-gray-500 mt-4">● Required  ○ Optional</p>
           </div>
 
           {/* Tips */}
-          <div className="rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 p-6">
-            <h3 className="text-lg font-semibold text-amber-400 mb-4">Tips</h3>
+          <div className="rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 p-6">
+            <h3 className="text-lg font-semibold text-[#D4AF37] mb-4">Tips</h3>
             <ul className="space-y-3">
               {currentPhase.tips.map((tip, i) => (
-                <li key={i} className="text-sm text-amber-200/80">
-                  💡 {tip}
+                <li key={i} className="text-sm text-[#D4AF37]/80">
+                  {tip}
                 </li>
               ))}
             </ul>
@@ -266,7 +270,7 @@ export default function Wizard() {
           {/* Phase Details Link */}
           <Link
             href={`/phases/${currentPhase.id}`}
-            className="block w-full text-center px-4 py-4 rounded-xl border border-violet-500/30 text-violet-400 hover:bg-violet-500/10 transition-all"
+            className="block w-full text-center px-4 py-4 rounded-xl border border-[#007BFF]/30 text-[#007BFF] hover:bg-[#007BFF]/10 transition-all"
           >
             View Full Phase Details →
           </Link>

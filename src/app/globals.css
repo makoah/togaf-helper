@@ -1,7 +1,7 @@
-@import "tailwindcss";
-
-/* Import Google Fonts */
+/* Import Google Fonts - must come first */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
 
 :root {
   --background: #0a0a0f;
@@ -37,6 +37,11 @@ body {
 
 /* Headings use Montserrat */
 h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', var(--font-heading), sans-serif;
+}
+
+/* Font utility classes */
+.font-montserrat {
   font-family: 'Montserrat', var(--font-heading), sans-serif;
 }
 
